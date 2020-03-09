@@ -11,6 +11,8 @@
 .pagination_txt {
     margin-left: 5px;
     margin-right: 5px;
+    position: relative;
+    top: -15px;
 }
 
 #yt_flexbox {
@@ -154,6 +156,11 @@
 
 .btn:hover {
     background-color: #b53333;
+}
+
+input {
+    width: 100%;
+    line-height: 3;
 }
 
 #yt_loader {
