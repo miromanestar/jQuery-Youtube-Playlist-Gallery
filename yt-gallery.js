@@ -296,11 +296,11 @@ function searchVisible() {
 function adjustColumns() {
     var width = window.innerWidth;
     
-    if(width >= 1024 && numColumns === "3") {
+    if(numColumns === "3" && width >= 1024) {
     	$(".video_container").css("width", "31%");
     }
 	
-    if(numColumns === "2" && width < 1024) {
+    if(numColumns === "2" || width < 1024) {
 	$(".video_container").css("width", "48%");
     }
 	
