@@ -295,7 +295,10 @@ function searchVisible() {
 
 function adjustColumns() {
     var width = window.innerWidth;
-    $(".video_container").css("width", "31%");
+    
+    if(width >= 1024 && numColumns === "3") {
+    	$(".video_container").css("width", "31%");
+    }
 	
     if(numColumns === "2") {
 	$(".video_container").css("width", "48%");
