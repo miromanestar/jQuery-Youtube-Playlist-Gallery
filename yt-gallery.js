@@ -15,7 +15,7 @@ var numColumns = document.currentScript.getAttribute('columns');
 var searchCacheName = "yt_" + window.location.pathname.split("/").pop();
 
 var videoIDs = [];
-var apiKey = "YOUR_API_KEY_HERE";
+var apiKey = "AIzaSyDTZeKfWmeOytVM6fgCMsAR3R-Up-wdEJA"; //Place your own API key here.
 
 var totalResults;
 var numPages;
