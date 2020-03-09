@@ -3,13 +3,13 @@ A HTML/JS/CSS paginated youtube playlist gallery with jQuery and fancybox! Also 
 
 The script tag for yt-gallery.js has several attributes:
 
- - searchEnabled is true/false, if false also disables the search cache to reduce API requests
+ - [Optional] searchEnabled is true/false, if false also disables the search cache to reduce API requests, default = true
   
- - columns can be 1, 2, or 3 (It will remain responsive regardless)
+ - [Optional] columns can be 1, 2, or 3 (It will remain responsive regardless), default = 3
   
  - playlistID is the youtube playlist ID
-  
- - resultsPerPage has a limit of 50 as per the youtube API
+ 
+ - [Optional] resultsPerPage has a limit of 50 as per the youtube API, default = 5 (Set by Youtube API)
   
 
 Visit my github page for a live demo: https://miromanestar.github.io/jQuery-Youtube-Playlist-Gallery/
