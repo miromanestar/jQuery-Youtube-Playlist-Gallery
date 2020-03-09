@@ -142,13 +142,14 @@
   display: inline-block;
   text-align: center;
   font-size: .875rem;
-  padding: .8125rem 1rem .75 rem;
+  padding: .8125rem 1rem .75rem;
   line-height: 1;
   cursor: pointer;
   transition: all .6s ease-out;
   overflow: hidden;
   border: none;
   background-color: #cd4e4e;
+  color: #fff
 }
 
 .btn:hover {
