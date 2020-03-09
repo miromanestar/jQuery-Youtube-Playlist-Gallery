@@ -192,14 +192,15 @@ function YTDurationToSeconds(duration) {
 }
 
 function loadFailed(apiResponse, msg) {
-    $("#yt_flexbox").html("<p style='text-align: center;'>The videos failed to load. If the problem persists, please contact us at <a href='mailto:support@chestateesda.org'>support@chestateesda.org</a>.</p>");
     $(".yt_refresh").css("display", "inherit");
     $("#yt_loader").css("display", "none");
     $(".yt_buttons").css("display", "none");
     $("#playlist_search").css("display", "none");
     ytButtons();
     let response = JSON.parse(apiResponse.responseText);
-    console.error(msg + " | Error " +  response.error.code + ": " + response.error.message);
+    let message = msg + " | Error " +  response.error.code + ": " + response.error.message;	
+    console.error(message);
+    $("#yt_flexbox").html("<p style='text-align: center;'>${ message }</p>");
 }
 
 function searchPlaylist() {
