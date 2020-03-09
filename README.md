@@ -1,7 +1,7 @@
 # jQuery-Youtube-Playlist-Gallery
 A HTML/JS/CSS paginated youtube playlist gallery with jQuery and fancybox!
 
-#Dependencies
+**Dependencies**
 ```html
 <a href="https://fancyapps.com/fancybox/3/">JQUERY FANCYBOX</a> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.js"></script>
