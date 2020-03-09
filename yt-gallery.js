@@ -9,8 +9,8 @@ window.addEventListener('resize', adjustColumns);
 
 var playlistID = document.currentScript.getAttribute('playlistID');
 var maxResults = document.currentScript.getAttribute('resultsPerPage');
-var searchEnabled = document.currentScript.getAttribute('searchEnabled');
-var numColumns = document.currentScript.getAttribute('columns');
+var searchEnabled = document.currentScript.getAttribute('searchEnabled') || true;
+var numColumns = document.currentScript.getAttribute('columns') || 3;
 
 var searchCacheName = "yt_" + window.location.pathname.split("/").pop();
 
