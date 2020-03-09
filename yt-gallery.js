@@ -1,4 +1,4 @@
-jQuery(document).ready(function() {
+$(document).ready(function() {
     getPlaylistItems();
     searchVisible();
     cacheControl();
