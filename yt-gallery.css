@@ -148,6 +148,11 @@
   transition: all .6s ease-out;
   overflow: hidden;
   border: none;
+  background-color: #cd4e4e;
+}
+
+.btn:hover {
+    background-color: #b53333;
 }
 
 #yt_loader {
