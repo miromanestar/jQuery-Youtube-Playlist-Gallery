@@ -300,7 +300,7 @@ function adjustColumns() {
     	$(".video_container").css("width", "31%");
     }
 	
-    if(numColumns === "2") {
+    if(numColumns === "2" && width < 1024) {
 	$(".video_container").css("width", "48%");
     }
 	
