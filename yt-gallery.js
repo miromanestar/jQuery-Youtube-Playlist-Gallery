@@ -294,10 +294,11 @@ function searchVisible() {
 }
 
 function adjustColumns() {
-	var width = window.innerWidth;
+    var width = window.innerWidth;
+    $(".video_container").css("width", "31%");
 	
     if(numColumns === "2") {
-		$(".video_container").css("width", "48%");
+	$(".video_container").css("width", "48%");
     }
 	
     if(numColumns === "1" || width <= 768) {
