@@ -12,7 +12,7 @@ The script tag for yt-gallery.js has several attributes:
  - [Optional] resultsPerPage has a limit of 50 as per the youtube API, default = 5 (Set by Youtube API)
   
 
-Visit my github page for a live demo: https://miromanestar.github.io/jQuery-Youtube-Playlist-Gallery/
+[Visit the live demo here.](https://miromanestar.github.io/jQuery-Youtube-Playlist-Gallery/)
 
 **Dependencies**
 
