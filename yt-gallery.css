@@ -111,7 +111,7 @@ body {
 #yt_date_icon {
     display: flex;
     float: left;
-    line-height: 1.6 !important;
+    line-height: 3 !important;
     padding-left: 10px;
     color: #575a5c;
 }
@@ -120,7 +120,7 @@ body {
     display: flex;
     float: right;
     padding-right: 10px;
-    line-height: 1.6 !important;
+    line-height: 3 !important;
     color: #575a5c;
 }
 
