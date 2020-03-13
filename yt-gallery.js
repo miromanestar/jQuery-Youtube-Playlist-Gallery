@@ -239,6 +239,7 @@ function ytButtons() {
 
     $('#yt_refresh_btn').click(function() {
         state = 'default';
+        currentPage = 1;
         $('#playlist_search').val('');
         $('#yt_loader').css('display', 'inherit');
         $('#yt_flexbox').empty();
