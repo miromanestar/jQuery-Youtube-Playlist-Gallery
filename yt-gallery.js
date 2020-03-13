@@ -155,7 +155,7 @@ function renderItems(items) {
     <\/a>
     `;
 
-    if (searchEnabled) {
+    if (searchEnabled === 'true') {
         $('#playlist_search').css('display', 'inherit');
     } else {
         $('#playlist_search').css('display', 'none');
