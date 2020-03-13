@@ -14,6 +14,7 @@ body {
     width: 250px;
     margin-left: auto;
     margin-right: auto;
+    user-select: none;
 }
 
 .pagination_txt {
@@ -149,17 +150,17 @@ body {
 }
 
 .btn {
-  display: inline-block;
-  text-align: center;
-  font-size: .875rem;
-  padding: .8125rem 1rem .75rem;
-  line-height: 1;
-  cursor: pointer;
-  transition: all .6s ease-out;
-  overflow: hidden;
-  border: none;
-  background-color: #cd4e4e;
-  color: #fff
+    display: inline-block;
+    text-align: center;
+    font-size: .875rem;
+    padding: .8125rem 1rem .75rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: all .6s ease-out;
+    overflow: hidden;
+    border: none;
+    background-color: #cd4e4e;
+    color: #fff
 }
 
 .btn:hover {
