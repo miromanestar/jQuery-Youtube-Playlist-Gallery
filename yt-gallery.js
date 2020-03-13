@@ -1,47 +1,60 @@
 jQuery(document).ready(function() {
-    getPlaylistItems();
-    searchVisible();
-    cacheControl();
+    checkCache();
     adjustColumns();
+    ytButtons();
+
+    var timer = null;
+    $('#playlist_search').keyup(function() {
+        clearTimeout(timer);
+        timer = setTimeout(search, 250);
+    });
 });
 
 window.addEventListener('resize', adjustColumns);
 
 var playlistID = document.currentScript.getAttribute('playlistID');
 var maxResults = document.currentScript.getAttribute('resultsPerPage');
-var searchEnabled = document.currentScript.getAttribute('searchEnabled') || true;
+var searchEnabled = document.currentScript.getAttribute('searchEnabled');
 var numColumns = document.currentScript.getAttribute('columns') || 3;
 
-var searchCacheName = "yt_" + window.location.pathname.split("/").pop();
+var apiKey = 'AIzaSyDTZeKfWmeOytVM6fgCMsAR3R-Up-wdEJA';
 
-var videoIDs = [];
-var apiKey = "AIzaSyDTZeKfWmeOytVM6fgCMsAR3R-Up-wdEJA"; //Place your own API key here.
+var cacheName = 'yt_gly_' + playlistID;
 
-var totalResults;
+var okayToPaginate = false;
 var numPages;
-currentPage = 1;
-var nextPageToken;
-var prevPageToken;
-var currentToken;
-var okayToPaginate = true;
+var currentPage = 1;
 
 var state;
 
-const Item = ({ id, snippet, contentDetails, statistics }) => `
-<a class="video_container" data-fancybox href="${ 'https://www.youtube.com/watch?v=' + id }">
-	<div class= "thumb_contain">
-		<img class="video_thumb" src="${ snippet.thumbnails.medium.url }">
-		<p class="yt_dur">${ YTDurationToSeconds(contentDetails.duration) }<\/p>
-	<\/div>
-	<p class="yt_desc">${ snippet.title }<\/p>
-	<i class="far fa-clock" id="yt_date_icon" aria-hidden="true"><\/i><p class="yt_date">${ parseISOString(snippet.publishedAt) }<\/p>
-	<p class="yt_view">${ statistics.viewCount }<\/p><i class="fa fa-eye" id="yt_view_icon" aria-hidden="true"><\/i>
-<\/a>
-`;
+function checkCache() {
+    if (!localStorage[cacheName]) {
+        getPlaylistItems();
+        console.log('Cache for \"' + cacheName + '\" not found... building.');
+    } else {
+        let cacheTime = JSON.parse(localStorage[cacheName]).time;
+        let d = new Date();
+        let t = d.getTime();
 
-function getPlaylistItems(token) {
-    $(".yt_refresh").css("display", "none");
-	$("#yt_flexbox").empty();
+        if (t - cacheTime > 86400000) {
+            getPlaylistItems();
+            console.log('Cache for \"' + cacheName + '\" is more than a day old... rebuilding.');
+        } else {
+            console.log('Cache for \"' + cacheName + '\" is less than a day old... keeping.');
+            numPages = JSON.parse(localStorage[cacheName]).numPages;
+            renderItems(returnPageCache());
+        }
+    }
+}
+
+function getPlaylistItems(data, token) {
+    let d = new Date();
+    let playlistItems = data || [];
+
+    $('.yt_buttons').css('display', 'none');
+    $('#playlist_search').css('display', 'none');
+    $('.yt_refresh').css('display', 'none');
+
     $.ajax({
         type: 'GET',
         url: 'https://www.googleapis.com/youtube/v3/playlistItems',
@@ -49,118 +62,238 @@ function getPlaylistItems(token) {
             key: apiKey,
             playlistId: playlistID,
             part: 'snippet',
-            maxResults: maxResults,
+            maxResults: 50,
             pageToken: token
         },
         success: function(data) {
-            console.log(data);
-            nextPageToken = data.nextPageToken;
-            prevPageToken = data.prevPageToken;
-            totalResults = data.pageInfo.totalResults;
-            numPages = Math.ceil(totalResults / maxResults);
-            $(".pagination_txt").text("Page " + currentPage + " of " + numPages);
-            getVideos(data, false);
+            for (let item of data.items) {
+                if (item.snippet.title !== 'Private video') {
+                    playlistItems.push(item.snippet.resourceId.videoId);
+                } else {
+                    console.log('Video with ID \"' + item.snippet.resourceId.videoId + '\" is private. Skipping...');
+                }
+            }
+
+            if (data.nextPageToken) {
+                getPlaylistItems(playlistItems, data.nextPageToken);
+            } else {
+                console.log('Playlist items successfully grabbed with ' + playlistItems.length + ' items... building cache');
+                buildCache(playlistItems);
+            }
         },
         error: function(response) {
-            loadFailed(response, "getPlaylistItems()");
+            logAjaxError(response, 'getPlaylistItems()');
         }
     });
 }
 
-function getVideos(data, skipIteration) {
-    videoIDs = [];
+function buildCache(playlistIDs, data, iteration) {
+    let d = new Date();
+    let cache = data || ({ time: d.getTime(), numPages: 0, pages: [{ items: [] }] });
 
-    if (!skipIteration) {
-        for (var item of data.items) {
-            if (item.snippet.title !== "Private video") {
-                videoIDs.push(item.snippet.resourceId.videoId);
-            } else {
-                console.log("Video with ID \"" + item.snippet.resourceId.videoId + "\" is private. Skipping...");
-            }
-        }
-    } else {
-        videoIDs = data.slice();
-    }
-
-    console.log(videoIDs);
+    let iterationNum = iteration + 1 || 1;
+    let ids = [];
+    ids = playlistIDs.slice((iterationNum - 1) * maxResults, iterationNum * maxResults);
 
     $.ajax({
         type: 'GET',
         url: 'https://www.googleapis.com/youtube/v3/videos',
         data: {
             key: apiKey,
-            id: videoIDs.toString(),
+            id: ids.toString(),
             part: 'snippet, contentDetails, statistics',
-            maxResults: maxResults
+            maxResults: 50
         },
         success: function(data) {
-            console.log(data);
-            $(".yt_refresh").css("display", "none");
-            $("#yt_loader").css("display", "none");
-            $("#yt_flexbox").html(data.items.map(Item).join(''));
-            $("#yt_buttons_bottom").css("display", "inherit");
-            okayToPaginate = true;
-            ytButtons();
-            adjustColumns();
+            for (let item of data.items) {
+                if (item.snippet.title !== 'Private video') {
+                    cache.pages[iterationNum - 1].items.push({
+                        title: item.snippet.title,
+                        date: parseISOString(item.snippet.publishedAt),
+                        thumbnail: item.snippet.thumbnails.medium.url,
+                        duration: YTDurationToSeconds(item.contentDetails.duration),
+                        views: numberWithCommas(item.statistics.viewCount),
+                        id: item.id
+                    });
+                } else {
+                    console.log('Video with ID \"' + item.snippet.resourceId.videoId + '\" is private. Skipping...');
+                }
+            }
+
+            if (iterationNum === 1) {
+                numPages = Math.ceil(playlistIDs.length / maxResults);
+                cache.numPages = numPages;
+                renderItems(cache.pages[iterationNum - 1].items);
+            }
+
+            if (iterationNum * maxResults < playlistIDs.length + 1) {
+                console.log('Page ' + iterationNum + ' cache has been built.');
+                cache.pages.push({ items: [] });
+                buildCache(playlistIDs, cache, iterationNum);
+            } else {
+                console.log('Page ' + iterationNum + ' cache has been built.');
+                console.log('Video cache successfully built with ' + playlistIDs.length + ' items.');
+                localStorage.setItem(cacheName, JSON.stringify(cache));
+            }
         },
         error: function(response) {
-            loadFailed(response, "getVideos()");
+            logAjaxError(response, 'buildCache()');
         }
     });
-
 }
 
-function ytButtons() {
-    if (!prevPageToken) {
-        $("#yt_back_btn_top, #yt_back_btn_bottom").css({ "background-color": "#cf7474", "cursor": "default" });
-    } else {
-        $("#yt_back_btn_top, #yt_back_btn_bottom").css({ "background-color": "#cd4e4e", "cursor": "pointer" });
-    }
+function renderItems(items) {
+    const Item = ({ title, date, thumbnail, duration, views, id }) => `
+    <a class="video_container" data-fancybox href="${ 'https://www.youtube.com/watch?v=' + id }">
+        <div class= "thumb_contain">
+            <img class="video_thumb" src="${ thumbnail }">
+            <p class="yt_dur">${ duration }<\/p>
+        <\/div>
+        <p class="yt_desc">${ title }<\/p>
+        <i class="far fa-clock" id="yt_date_icon" aria-hidden="true"><\/i><p class="yt_date">${ date }<\/p>
+        <p class="yt_view">${ views }<\/p><i class="fa fa-eye" id="yt_view_icon" aria-hidden="true"><\/i>
+    <\/a>
+    `;
 
-    if (!nextPageToken) {
-        $("#yt_next_btn_top, #yt_next_btn_bottom").css({ "background-color": "#cf7474", "cursor": "default" });
+    if (searchEnabled) {
+        $('#playlist_search').css('display', 'inherit');
     } else {
-        $("#yt_next_btn_top, #yt_next_btn_bottom").css({ "background-color": "#cd4e4e", "cursor": "pointer" });
+        $('#playlist_search').css('display', 'none');
     }
 
     if (numPages === 1) {
-        $(".yt_buttons").css("display", "none");
-    }
-    
-    if(state === "search") {
-    	$(".yt_buttons").css("display", "none");
-    }
-    
-    if(state === "default" && numPages > 1) {
-    	$(".yt_buttons").css("display", "inherit");
+        $('.yt_buttons').css('display', 'none');
+    } else {
+        $('.yt_buttons').css('display', 'inherit');
     }
 
-    $("#yt_back_btn_top, #yt_back_btn_bottom").click(function() {
-        if (okayToPaginate && currentPage - 1 !== 0) {
-            getPlaylistItems(prevPageToken);
-            currentToken = prevPageToken;
-            okayToPaginate = false;
-            $("#yt_loader").css("display", "inherit");
-            $("#yt_buttons_bottom").css("display", "none");
-            currentPage--;
+    if (state === 'search') {
+        $('.yt_buttons').css('display', 'none');
+    }
+    if (state === 'default' && numPages > 1) {
+        $('.yt_buttons').css('display', 'inherit');
+    }
+
+    $('.yt_refresh').css('display', 'inherit');
+    $("#yt_flexbox").empty();
+    $('#yt_flexbox').html(items.map(Item).join(''));
+    $('#yt_loader').css('display', 'none');
+    $('.pagination_txt').text('Page ' + currentPage + ' of ' + numPages);
+    ytButtonStyling();
+    okayToPaginate = true;
+}
+
+function search() {
+    let input = document.getElementById('playlist_search').value.toLowerCase();
+
+    if (input !== '') {
+        let data = JSON.parse(localStorage[cacheName]).pages;
+        let results = [];
+
+        for (let page of data) {
+            for (let item of page.items) {
+                if (item.title.toLowerCase().includes(input) || item.date.toLowerCase().includes(input)) {
+                    results.push(item);
+                }
+            }
         }
-    });
-    $("#yt_next_btn_top, #yt_next_btn_bottom").click(function() {
-        if (okayToPaginate && currentPage + 1 !== numPages + 1) {
-            getPlaylistItems(nextPageToken);
-            currentToken = nextPageToken;
-            okayToPaginate = false;
-            $("#yt_loader").css("display", "inherit");
-            $("#yt_buttons_bottom").css("display", "none");
-            currentPage++;
+
+        if (results.length < maxResults && results.length > 0) {
+            $('#yt_loader').css('display', 'inherit');
+            $('.yt_buttons').css('display', 'none');
+
+            currentSearchPage = 1;
+            state = 'search';
+            numSearchResults = results.length;
+            renderItems(results);
         }
-    });
-    $("#yt_refresh_btn").click(function() {
+    } else {
         $("#yt_loader").css("display", "inherit");
-        $(".yt_buttons").css("display", "inherit");
-        getPlaylistItems();
-        searchVisible();
+        state = 'default';
+        renderItems(returnPageCache());
+    }
+}
+
+function ytButtons() {
+    $('#yt_back_btn_top, #yt_back_btn_bottom').click(function() {
+        if (okayToPaginate && currentPage !== 1 && state === 'default') {
+            okayToPaginate = false;
+            currentPage--;
+
+            $('#yt_buttons_bottom').css('display', 'none');
+            $('#yt_loader').css('display', 'inherit');
+            renderItems(returnPageCache());
+        }
     });
+
+    $('#yt_next_btn_top, #yt_next_btn_bottom').click(function() {
+        if (okayToPaginate && currentPage !== numPages && state === 'default') {
+            okayToPaginate = false;
+            currentPage++;
+
+            $('#yt_buttons_bottom').css('display', 'none');
+            $('#yt_loader').css('display', 'inherit');
+            renderItems(returnPageCache());
+        }
+    });
+
+    $('#yt_refresh_btn').click(function() {
+        state = 'default';
+        $('#playlist_search').val('');
+        $('#yt_loader').css('display', 'inherit');
+        $('#yt_flexbox').empty();
+        getPlaylistItems();
+    });
+}
+
+function ytButtonStyling() {
+    if (numPages === 1) {
+        $('.yt_buttons').css('display', 'none');
+    }
+
+    if (currentPage === 1) {
+        $('#yt_back_btn_top, #yt_back_btn_bottom').css({ 'background-color': '#cf7474', 'cursor': 'default' });
+    } else {
+        $('#yt_back_btn_top, #yt_back_btn_bottom').css({ 'background-color': '#cd4e4e', 'cursor': 'pointer' });
+    }
+
+    if (currentPage === numPages) {
+        $('#yt_back_btn_top, #yt_back_btn_bottom').css({ 'background-color': '#cd4e4e', 'cursor': 'pointer' });
+    } else {
+        $('#yt_next_btn_top, #yt_next_btn_bottom').css({ 'background-color': '#cd4e4e', 'cursor': 'pointer' });
+    }
+}
+
+function adjustColumns() {
+    var width = window.innerWidth;
+
+    if (numColumns === "3" && width >= 1024) {
+        $(".video_container").css("width", "31%");
+    }
+
+    if (numColumns === "2" || width < 1024) {
+        $(".video_container").css("width", "48%");
+    }
+
+    if (numColumns === "1" || width <= 768) {
+        $(".video_container").css("width", "100%");
+    }
+}
+
+function returnPageCache() {
+    return JSON.parse(localStorage[cacheName]).pages[currentPage - 1].items;
+}
+
+function logAjaxError(ajaxResponse, msg) {
+    let response = JSON.parse(ajaxResponse.responseText);
+    let message = msg + ' | Error ' + response.error.code + ': ' + response.error.message;
+    console.error(message);
+    $('#yt_flexbox').html('<p style="text-align: center;">${ message }</p>');
+
+    $('.yt_refresh').css('display', 'inherit');
+    $('#yt_loader').css('display', 'none');
+    $('.yt_buttons').css('display', 'none');
+    $('#playlist_search').css('display', 'none');
 }
 
 function parseISOString(s) {
@@ -191,120 +324,6 @@ function YTDurationToSeconds(duration) {
     if (hours === 0) { return minutes + ":" + seconds } else { return hours + ":" + minutes + ":" + seconds; }
 }
 
-function loadFailed(apiResponse, msg) {
-    $(".yt_refresh").css("display", "inherit");
-    $("#yt_loader").css("display", "none");
-    $(".yt_buttons").css("display", "none");
-    $("#playlist_search").css("display", "none");
-    ytButtons();
-    let response = JSON.parse(apiResponse.responseText);
-    let message = msg + " | Error " +  response.error.code + ": " + response.error.message;	
-    console.error(message);
-    $("#yt_flexbox").html("<p style='text-align: center;'>${ message }</p>");
-}
-
-function searchPlaylist() {
-    let input = document.getElementById('playlist_search').value.toLowerCase();
-    console.log("Search: " + input);
-    if (input !== "") {
-        let data = JSON.parse(localStorage[searchCacheName]);
-        let results = [];
-        for (let item of data.contents) {
-            if (item.title.toLowerCase().includes(input)) {
-                results.push(item.id);
-            }
-        }
-        if (results.length < 50 && results.length > 0) {
-        	$("#yt_flexbox").empty();
-            $("#yt_loader").css("display", "inherit");
-            $(".yt_buttons").css("display", "none");
-            getVideos(results, true)
-            state = "search";
-        }
-    } else {
-    	$("#yt_flexbox").empty();
-        $("#yt_loader").css("display", "inherit");
-        getPlaylistItems(currentToken);
-        state = "default";
-    }
-}
-
-/*
-    Method checks if cache exists. If so, it checks if the cache is more than one day old.
-    If it is, it recreates the cache anyway. Otherwise
-*/
-function cacheControl() {
-	if(searchEnabled === "true") {
-	    if (!localStorage[searchCacheName]) {
-	        cache()
-	        console.log("Cache for \"" + searchCacheName + "\" not found... building.")
-	    } else {
-	        let cacheTime = JSON.parse(localStorage[searchCacheName]).time;
-	        let d = new Date();
-	        let t = d.getTime();
-	        if (t - cacheTime > 86400000) {
-	            cache();
-	            console.log("Cache for \"" + searchCacheName + "\" is more than a day old... rebuilding.")
-	        } else {
-	            console.log("Cache for \"" + searchCacheName + "\" is less than a day old... keeping.")
-	        }
-	    }
-	}
-}
-
-function cache(data, token) {
-    let d = new Date();
-    var searchCache = data || ({ time: d.getTime(), contents: [] });
-
-    $.ajax({
-        type: 'GET',
-        url: 'https://www.googleapis.com/youtube/v3/playlistItems',
-        data: {
-            key: apiKey,
-            playlistId: playlistID,
-            part: 'snippet',
-            maxResults: 50,
-            pageToken: token,
-        },
-        success: function(data) {
-            cacheNextPageToken = data.nextPageToken;
-            for (let item of data.items) {
-                if (item.snippet.title !== "Private video") {
-                    searchCache.contents.push({ title: item.snippet.title, id: item.snippet.resourceId.videoId });
-                }
-            }
-
-            if (data.nextPageToken) {
-                cache(searchCache, data.nextPageToken);
-            } else {
-                localStorage.setItem(searchCacheName, JSON.stringify(searchCache));
-                console.log(searchCache);
-            }
-        },
-        error: function(response) {
-            loadFailed(response, "cache()");
-        }
-    });
-}
-
-function searchVisible() {
-    if (searchEnabled === "false") {
-        $("#playlist_search").css("display", "none");
-    }
-}
-
-function adjustColumns() {
-    var width = window.innerWidth;
-    
-    if(numColumns === "3" && width >= 1024) {
-    	$(".video_container").css("width", "31%");
-    }
-	
-    if(numColumns === "2" || width < 1024) {
-	$(".video_container").css("width", "48%");
-    }
-	
-    if(numColumns === "1" || width <= 768) {
-    	$(".video_container").css("width", "100%");
-    }
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
