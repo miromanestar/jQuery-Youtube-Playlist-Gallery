@@ -216,7 +216,7 @@ function search() {
 
 function ytButtons() {
     $('#yt_back_btn_top, #yt_back_btn_bottom').click(function() {
-        if (okayToPaginate && currentPage !== 1 && returnPageCache(currentPage - 1)) {
+        if (okayToPaginate && currentPage !== 1 && returnPageCache(currentPage - 2)) {
             okayToPaginate = false;
             currentPage--;
 
@@ -227,7 +227,7 @@ function ytButtons() {
     });
 
     $('#yt_next_btn_top, #yt_next_btn_bottom').click(function() {
-        if (okayToPaginate && currentPage !== numPages && returnPageCache(currentPage + 1)) {
+        if (okayToPaginate && currentPage !== numPages && returnPageCache(currentPage)) {
             okayToPaginate = false;
             currentPage++;
 
