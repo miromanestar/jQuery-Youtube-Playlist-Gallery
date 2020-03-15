@@ -223,7 +223,7 @@ function ytButtons() {
             $('#yt_buttons_bottom').css('display', 'none');
             $('#yt_loader').css('display', 'inherit');
 			
-			if(returnPageCache(currentPage - 3)) {
+			if(returnPageCache(currentPage)) {
 				renderItems(returnPageCache());
 			} else {
 				setTimeout(ytButtons, 250);
