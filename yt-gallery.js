@@ -245,6 +245,10 @@ function goBack() {
 
 			renderItems(returnPageCache());
 		} else {
+			okayToPaginate = false;
+			$('#yt_flexbox').empty();
+			$('#yt_buttons_bottom').css('display', 'none');
+			$('#yt_loader').css('display', 'inherit');
 			setTimeout(goBack, 250);
 		}
 	}
@@ -261,6 +265,10 @@ function goNext() {
 
 			renderItems(returnPageCache());
 		} else {
+			okayToPaginate = false;
+			$('#yt_flexbox').empty();
+			$('#yt_buttons_bottom').css('display', 'none');
+			$('#yt_loader').css('display', 'inherit');
 			setTimeout(goNext, 250);
 		}
 	}
