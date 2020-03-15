@@ -216,30 +216,25 @@ function search() {
 
 function ytButtons() {
     $('#yt_back_btn_top, #yt_back_btn_bottom').click(function() {
-        if (okayToPaginate && currentPage !== 1) {
+        if (okayToPaginate && currentPage !== 1 && returnPageCache(currentPage - 2)) {
             okayToPaginate = false;
             currentPage--;
 
             $('#yt_buttons_bottom').css('display', 'none');
             $('#yt_loader').css('display', 'inherit');
 			
-			if(returnPageCache(currentPage)) {
-				renderItems(returnPageCache());
-			}
+			renderItems(returnPageCache());
         }
     });
 
     $('#yt_next_btn_top, #yt_next_btn_bottom').click(function() {
-        if (okayToPaginate && currentPage !== numPages) {
-				okayToPaginate = false;
-				currentPage++ ;
-			
-				$('#yt_buttons_bottom').css('display', 'none');
-                $('#yt_loader').css('display', 'inherit');
-			
-            if(returnPageCache(currentPage - 1)) {
-                renderItems(returnPageCache());
-            }
+        if (okayToPaginate && currentPage !== numPages && returnPageCache(currentPage)) {
+			okayToPaginate = false;
+			currentPage++ ;
+
+			$('#yt_buttons_bottom').css('display', 'none');
+			$('#yt_loader').css('display', 'inherit');
+			renderItems(returnPageCache());
         }
     });
 
