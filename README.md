@@ -5,7 +5,7 @@ The script tag for yt-gallery.js has several attributes:
 
  - playlistID is the youtube playlist ID
 
- - [Optional] searchEnabled is true/false, if false also disables the search cache to reduce API requests, default = true
+ - [Optional] searchEnabled is true/false, hides searchbar, default = true
   
  - [Optional] columns can be 1, 2, or 3 (It will remain responsive regardless), default = 3
  
