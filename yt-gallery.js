@@ -115,6 +115,7 @@ function buildCache(playlistIDs, data, iteration) {
                         views: numberWithCommas(item.statistics.viewCount),
                         id: item.id
                     });
+                    localStorage.setItem(cacheName, JSON.stringify(cache));
                 } else {
                     console.log('Video with ID \"' + item.snippet.resourceId.videoId + '\" is private. Skipping...');
                 }
@@ -133,7 +134,6 @@ function buildCache(playlistIDs, data, iteration) {
             } else {
                 console.log('Page ' + iterationNum + ' cache has been built.');
                 console.log('Video cache successfully built with ' + playlistIDs.length + ' items.');
-                localStorage.setItem(cacheName, JSON.stringify(cache));
             }
         },
         error: function(response) {
