@@ -246,6 +246,7 @@ function goBack() {
 			renderItems(returnPageCache());
 		} else {
 			setTimeout(goBack, 250);
+		}
 	}
 }
 
