@@ -116,6 +116,7 @@ function buildCache(playlistIDs, data, iteration) {
                         id: item.id
                     });
                     localStorage.setItem(cacheName, JSON.stringify(cache));
+		    ytButtonStyling();
                 } else {
                     console.log('Video with ID \"' + item.snippet.resourceId.videoId + '\" is private. Skipping...');
                 }
