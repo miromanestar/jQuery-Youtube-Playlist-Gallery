@@ -254,7 +254,7 @@ function ytButtonStyling() {
         $('.yt_buttons').css('display', 'none');
     }
 
-    if (currentPage === 1 || returnPageCache(currentPage - 2)) {
+    if (currentPage === 1 || returnPageCache(currentPage - 1)) {
         $('#yt_back_btn_top, #yt_back_btn_bottom').css({ 'background-color': '#cf7474', 'cursor': 'default' });
     } else {
         $('#yt_back_btn_top, #yt_back_btn_bottom').css({ 'background-color': '#cd4e4e', 'cursor': 'pointer' });
