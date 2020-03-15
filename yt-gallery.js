@@ -225,10 +225,6 @@ function ytButtons() {
 			
 			if(returnPageCache(currentPage)) {
 				renderItems(returnPageCache());
-			} else {
-				while(returnPageCache(currentPage)) {
-				}
-				renderItems(returnPageCache());
 			}
         }
     });
@@ -243,11 +239,7 @@ function ytButtons() {
 			
             if(returnPageCache(currentPage - 1)) {
                 renderItems(returnPageCache());
-            } else {
-				while(returnPageCache(currentPage - 1)) {
-				}
-				renderItems(returnPageCache());
-			}	
+            }
         }
     });
 
