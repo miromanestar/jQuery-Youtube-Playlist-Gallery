@@ -223,7 +223,7 @@ function ytButtons() {
             $('#yt_buttons_bottom').css('display', 'none');
             $('#yt_loader').css('display', 'inherit');
 			
-			if(returnpageCache(currentPage - 3)) {
+			if(returnPageCache(currentPage - 3)) {
 				renderItems(returnPageCache());
 			} else {
 				setTimeout(ytButtons, 250);
@@ -239,7 +239,7 @@ function ytButtons() {
 				$('#yt_buttons_bottom').css('display', 'none');
                 $('#yt_loader').css('display', 'inherit');
 			
-            if(returnpageCache(currentPage - 1)) {
+            if(returnPageCache(currentPage - 1)) {
                 renderItems(returnPageCache());
             } else {
 				setTimeout(ytButtons, 250);
