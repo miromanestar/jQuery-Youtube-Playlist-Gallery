@@ -216,7 +216,7 @@ function search() {
 
 function ytButtons() {
     $('#yt_back_btn_top, #yt_back_btn_bottom').click(function() {
-        if (okayToPaginate && currentPage !== 1) {
+        if (okayToPaginate && currentPage !== 1 && returnPageCache(currentPage - 2)) {
             okayToPaginate = false;
             currentPage--;
 
@@ -227,7 +227,7 @@ function ytButtons() {
     });
 
     $('#yt_next_btn_top, #yt_next_btn_bottom').click(function() {
-        if (okayToPaginate && currentPage !== numPages) {
+        if (okayToPaginate && currentPage !== numPages && returnPageCache(currentPage)) {
             okayToPaginate = false;
             currentPage++;
 
@@ -281,8 +281,9 @@ function adjustColumns() {
     }
 }
 
-function returnPageCache() {
-    return JSON.parse(localStorage[cacheName]).pages[currentPage - 1].items;
+function returnPageCache(page) {
+    pageRef = page || currentPage - 1;
+    return JSON.parse(localStorage[cacheName]).pages[pageRef].items;
 }
 
 function logAjaxError(ajaxResponse, msg) {
