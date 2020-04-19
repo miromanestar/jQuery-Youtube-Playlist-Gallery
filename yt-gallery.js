@@ -181,6 +181,7 @@ function renderItems(items) {
     $('#yt_loader').css('display', 'none');
     $('.pagination_txt').text('Page ' + currentPage + ' of ' + numPages);
     ytButtonStyling();
+	adjustColumns();
     okayToPaginate = true;
 }
 
