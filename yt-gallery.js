@@ -291,6 +291,7 @@ function ytButtonStyling() {
     } else {
         $('#yt_next_btn_top, #yt_next_btn_bottom').css({ 'background-color': '#cd4e4e', 'cursor': 'pointer' }).removeClass('disabled').addClass('enabled');
     }
+}
 
 function adjustColumns() {
     var width = window.innerWidth;
