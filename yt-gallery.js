@@ -281,17 +281,16 @@ function ytButtonStyling() {
     }
 
     if (currentPage === 1) {
-        $('#yt_back_btn_top, #yt_back_btn_bottom').css({ 'background-color': '#cf7474', 'cursor': 'default' });
+        $('#yt_back_btn_top, #yt_back_btn_bottom').css({ 'background-color': '#cf7474', 'cursor': 'default' }).removeClass('enabled').addClass('disabled');
     } else {
-        $('#yt_back_btn_top, #yt_back_btn_bottom').css({ 'background-color': '#cd4e4e', 'cursor': 'pointer' });
+        $('#yt_back_btn_top, #yt_back_btn_bottom').css({ 'background-color': '#cd4e4e', 'cursor': 'pointer' }).removeClass('disabled').addClass('enabled');
     }
 
     if (currentPage === numPages) {
-        $('#yt_next_btn_top, #yt_next_btn_bottom').css({ 'background-color': '#cf7474', 'cursor': 'default' });
+        $('#yt_next_btn_top, #yt_next_btn_bottom').css({ 'background-color': '#cf7474', 'cursor': 'default' }).removeClass('enabled').addClass('disabled');
     } else {
-        $('#yt_next_btn_top, #yt_next_btn_bottom').css({ 'background-color': '#cd4e4e', 'cursor': 'pointer' });
+        $('#yt_next_btn_top, #yt_next_btn_bottom').css({ 'background-color': '#cd4e4e', 'cursor': 'pointer' }).removeClass('disabled').addClass('enabled');
     }
-}
 
 function adjustColumns() {
     var width = window.innerWidth;
