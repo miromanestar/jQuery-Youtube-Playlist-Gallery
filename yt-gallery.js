@@ -1,3 +1,7 @@
+/*
+    Miro Manestar | June 6, 2020
+    A simple front-end script that grabs youtube videos and displays them in a gallery format!
+*/
 jQuery(document).ready(function () {
     checkCache();
     adjustColumns();
