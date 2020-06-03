@@ -1,4 +1,5 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.js"></script>
@@ -9,27 +10,29 @@
 </head>
 
 <body>
-<script src="yt-gallery.js" searchEnabled="true" columns="3" resultsPerPage="18" playlistID="PL4BrNFx1j7E6a6IKg8N0IgnkoamHlCHWa"></script>
+    <script src="yt-gallery.js" searchEnabled="true" columns="4" resultsPerPage="18" playlistId=""></script>
 
-<input id="playlist_search" type="text" name="playlist-search" placeholder="Search...">
+    <input id="ytgallery-search" type="text" name="playlist-search" placeholder="Search...">
 
-<div class="yt_buttons" id="yt_buttons_top">
-    <span class='btn' id='yt_back_btn_top'>Back</span>
-    <span class='pagination_txt'></span>
-    <span class='btn' id='yt_next_btn_top'>Next</span>
-</div>
+    <div class="ytgallery-buttons" id="ytgallery-buttons-top">
+        <span class='btn' id='ytgallery-back-top'>Back</span>
+        <span class='ytgallery-pagination-text'></span>
+        <span class='btn' id='ytgallery-next-top'>Next</span>
+    </div>
 
-<div id="yt_loader"></div>
+    <div id="ytgallery-load-icon"></div>
 
-<div id="yt_flexbox"></div>
+    <div id="ytgallery-flexbox"></div>
+    <p class="ytgallery-error ytgallery-noplaylistid">There was an error retrieving the videos from youtube.</p>
+    <p class="ytgallery-error ytgallery-ajaxerror">No playlist ID has been set.</p>
 
-<div class="yt_buttons" id="yt_buttons_bottom">
-    <span class='btn' id='yt_back_btn_bottom'>Back</span>
-    <span class='pagination_txt'></span>
-    <span class='btn' id='yt_next_btn_bottom'>Next</span>
-</div>
+    <div class="ytgallery-buttons" id="ytgallery-buttons-bottom">
+        <span class='btn' id='ytgallery-back-bottom'>Back</span>
+        <span class='ytgallery-pagination-text'></span>
+        <span class='btn' id='ytgallery-next-bottom'>Next</span>
+    </div>
 
-<div class="yt_refresh">
-    <span class='btn' id="yt_refresh_btn">Refresh</span>
-</div>
+    <div class="ytgallery-refresh">
+        <span class='btn' id="ytgallery-refresh-btn">Refresh</span>
+    </div>
 </body>
