@@ -375,11 +375,12 @@ function parseIsoToDuration(duration) {
 
     var hours = (parseInt(match[0]) || 0);
     var minutes = (parseInt(match[1]) || 0);
+    if (minutes < 10 && minutes !== 0 && hours !== 0) { minutes = `0${ minutes }`; }
     var seconds = (parseInt(match[2]) || 0);
     if (seconds < 10) { seconds = `0${ seconds }`; }
 
     //return hours * 3600 + minutes * 60 + seconds;
-    if (hours === 0) { return `${ minutes }:${ seconds }` } else { return `${ hours}:0${ minutes }:${ seconds }`; }
+    if (hours === 0) { return `${ minutes }:${ seconds }` } else { return `${ hours}:${ minutes }:${ seconds }`; }
 }
 
 function numberWithCommas(num) {
