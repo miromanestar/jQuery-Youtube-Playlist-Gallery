@@ -361,7 +361,7 @@ function parseIsoToDate(s) {
 }
 
 function parseIsoToDuration(duration) {
-    if (duration === 'P0D') {
+    if (duration === 'P0D') { //Occurs when a video is currently live and added to the playlist.
         return 'LIVE';
     }
 
