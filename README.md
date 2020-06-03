@@ -7,7 +7,7 @@ The script tag for yt-gallery.js has several attributes:
 
  - [Optional] searchEnabled is true/false, hides searchbar, default = true
   
- - [Optional] columns can be 1, 2, or 3 (It will remain responsive regardless), default = 3
+ - [Optional] columns can be 1, 2, 3, or 4(It will remain responsive regardless), default = 3
  
  - [Optional] resultsPerPage has a limit of 50 as per the youtube API, default = 5 (Set by Youtube API)
   
