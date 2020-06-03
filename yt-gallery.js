@@ -39,6 +39,7 @@ function checkCache() {
         $('.ytgallery-noplaylistiderror').show();
         return console.error(playlistId);
     }
+    $('.ytgallery-error').hide();
 
     if (!localStorage[cacheName]) { //Cache doesn't exist.
         getPlaylistItems();
