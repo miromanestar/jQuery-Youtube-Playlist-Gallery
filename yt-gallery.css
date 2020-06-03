@@ -2,10 +2,6 @@
     text-decoration: none !important;
 }
 
-body {
-    width: 96%
-}
-
 .btn.enabled:hover {
 	background-color: #b53333 !important;
 }
