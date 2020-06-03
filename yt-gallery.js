@@ -21,7 +21,7 @@ var maxResults = document.currentScript.getAttribute('resultsPerPage') || 5; //M
 var searchEnabled = document.currentScript.getAttribute('searchEnabled') || 'true'; //Optional.
 var numColumns = document.currentScript.getAttribute('columns') || 3; //Max is 4, optional.
 
-var apiKey = 'AIzaSyDTZeKfWmeOytVM6fgCMsAR3R-Up-wdEJA';
+var apiKey = 'AIzaSyDTZeKfWmeOytVM6fgCMsAR3R-Up-wdEJA'; //Set your API key.
 
 var cacheName = `ytgallery-${ playlistId }`;
 var cache = getCache(); //Will check if cache exists or not.
