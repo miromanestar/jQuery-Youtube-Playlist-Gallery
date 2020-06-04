@@ -145,10 +145,10 @@ function buildCache(playlistIds, data, iteration) {
             if (iterationNum * maxResults < playlistIds.length + 1) {
                 cache.pages.push({ items: [] }); //Create empty page for next iteration.
                 buildCache(playlistIds, cache, iterationNum);
-                console.log(`Page ${ iterationNum } data has been retrieved`);
+                console.log(`Page ${ iterationNum } data has been retrieved.`);
             } else {
                 localStorage.setItem(cacheName, JSON.stringify(cache)); //Save cache to storage once completed.
-                console.log(`Page ${ iterationNum } data has been retrieved`);
+                console.log(`Page ${ iterationNum } data has been retrieved.`);
             }
         },
         error: function (response) {
