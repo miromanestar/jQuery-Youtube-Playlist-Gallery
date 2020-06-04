@@ -159,7 +159,7 @@ function buildCache(playlistIds, data, iteration) {
 
 function renderItems(items) {
     const Item = ({ title, date, thumbnail, duration, views, id }) => `
-    <a class="ytgallery-video-container" data-fancybox href="'https://www.youtube.com/watch?v=${ id }">
+    <a class="ytgallery-video-container" data-fancybox href="https://www.youtube.com/watch?v=${ id }">
         <div class= "ytgallery-thumbnail-container">
             <img class="ytgallery-video-thumbnail" src="${ thumbnail }">
             <p class="ytgallery-video-duration">${ duration }<\/p>
