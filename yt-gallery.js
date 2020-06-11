@@ -18,7 +18,7 @@ jQuery(document).ready(function () {
 window.addEventListener('resize', adjustColumns);
 
 var playlistId = document.currentScript.getAttribute('playlistId') || 'Error: No playlistID set.'; //Required.
-var maxResults = document.currentScript.getAttribute('resultsPerPage') || 5; //Max is 50.
+var maxResults = document.currentScript.getAttribute('resultsPerPage') || 5; //No hard maximum.
 var searchEnabled = document.currentScript.getAttribute('searchEnabled') || 'true'; //Optional.
 var numColumns = document.currentScript.getAttribute('columns') || 3; //Max is 4, optional.
 
