@@ -7,17 +7,17 @@ The script tag for yt-gallery.js has several attributes:
 
  - [Optional] searchEnabled is true/false, hides searchbar, default = true
  
-      The search bar will only work if it finds any results and if the number of results are less than resultsPerPage.
+      \tThe search bar will only work if it finds any results and if the number of results are less than resultsPerPage.
   
  - [Optional] columns can be 1, 2, 3, or 4 (It will remain responsive regardless), default = 3
  
-      The columns argument only controls the max number of columns, but the actual number will change based on the
-      size of the screen, ensuring it is always responsive and the video elements are never crushed together.
+      \tThe columns argument only controls the max number of columns, but the actual number will change based on the
+      \tsize of the screen, ensuring it is always responsive and the video elements are never crushed together.
  
  - [Optional] resultsPerPage maximum is 50, default = 5
  
-      The pagination in this script is not handled by the youtube data api, but the per page limit is 50
-      The pagination is handled via parsing a stored array which contains all the pertinent data.
+      \tThe pagination in this script is not handled by the youtube data api, but the per page limit is 50
+      \tThe pagination is handled via parsing a stored array which contains all the pertinent data.
   
 
 [Visit the live demo here.](https://miromanestar.github.io/jQuery-Youtube-Playlist-Gallery/)
