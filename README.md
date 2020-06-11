@@ -14,11 +14,10 @@ The script tag for yt-gallery.js has several attributes:
       The columns argument only controls the max number of columns, but the actual number will change based on the
       size of the screen, ensuring it is always responsive and the video elements are never crushed together.
  
- - [Optional] resultsPerPage has no maximum, default = 5
+ - [Optional] resultsPerPage maximum is 50, default = 5
  
-      The pagination in this script is not handled by the youtube data api, meaning there is no real limit
-      despite the youtube data api having a limit of 50 items per page. Rather, the pagination is handled
-      via parsing a stored array which contains all the pertinent data.
+      The pagination in this script is not handled by the youtube data api, but the per page limit is 50
+      The pagination is handled via parsing a stored array which contains all the pertinent data.
   
 
 [Visit the live demo here.](https://miromanestar.github.io/jQuery-Youtube-Playlist-Gallery/)
