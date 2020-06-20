@@ -47,7 +47,7 @@ function checkCache() {
         console.log(`Cache for \"${ cacheName }\" not found... building.`);
     } else {
         let currentTime = new Date().getTime();
-        if (currentTime - cache.time > 8640000086400000) { //Cache is more than 1 day old.
+        if (currentTime - cache.time > 86400000) { //Cache is more than 1 day old.
             getPlaylistItems();
             console.log(`Cache for \"${ cacheName }\" is more than a day old... rebuilding.`);
         } else {
