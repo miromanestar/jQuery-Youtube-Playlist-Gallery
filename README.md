@@ -18,7 +18,7 @@ The script tag for yt-gallery.js has several attributes:
  
       The pagination in this script is not handled by the youtube data api, but the per page limit is 50. The pagination is handled via parsing a stored array which contains all       the pertinent data.
       
-      The data structure for the playlist is saved like so in application storage:
+      All dates are formatted in the Month Day, Year format, and video duration is formatted to h:m:ss. The structure for the playlist data format is like so:
       ```
       ytgallery-PLAYLISTID
       {
