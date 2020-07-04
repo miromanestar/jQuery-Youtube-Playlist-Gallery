@@ -133,6 +133,7 @@ function buildCache(playlistIds, data, iteration) {
                 if (item.snippet.title !== 'Private video') {
                     cache.pages[iterationNum - 1].items.push({
                         title: item.snippet.title,
+                        description: item.snippet.description,
                         date: getDate(item), //Grabs 1 of three possible date sources.
                         thumbnail: item.snippet.thumbnails.medium.url,
                         duration: parseIsoToDuration(item.contentDetails.duration),
