@@ -173,6 +173,7 @@ function getPlaylistInfo() {
             part: 'snippet',
         },
         success: function (data) {
+           console.log('Successfully retrieved playlist info');
            playlistInfo = ({ title: data.items[0].snippet.title,
                              description: data.items[0].snippet.description,
                              publishedAt: parseIsoToDate(data.items[0].snippet.publishedAt),
