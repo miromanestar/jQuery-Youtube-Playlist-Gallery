@@ -109,7 +109,7 @@ function getPlaylistItems(data, token) {
 function buildCache(playlistIds, data, iteration) {
     let iterationNum = iteration + 1 || 1;
     let ids = playlistIds.slice((iterationNum - 1) * maxResults, iterationNum * maxResults);
-    cache = data || ({ title: getPlaylistTitle(), time: new Date().getTime(), numPages: 0, pages: [{ items: [] }] });
+    cache = data || ({ playlistInfo: getPlaylistInfo(), time: new Date().getTime(), numPages: 0, pages: [{ items: [] }] });
 
     $.ajax({
         type: 'GET',
@@ -157,7 +157,10 @@ function buildCache(playlistIds, data, iteration) {
     });
 }
 
-function getPlaylistTitle() {
+/*
+    Retrives playlist info such as title, thumbnails, localized info, etc.
+*/
+function getPlaylistInfo(selection) {
      $.ajax({
         type: 'GET',
         url: 'https://www.googleapis.com/youtube/v3/playlists',
@@ -167,10 +170,17 @@ function getPlaylistTitle() {
             part: 'snippet',
         },
         success: function (data) {
-            return data.snippet.title;
+           return { title: data.items[0].snippet.title,
+                    description: data.items[0].snippet.description,
+                    publishedAt: parseIsoToDate(data.items[0].snippet.publishedAt),
+                    channelTitle: data.items[0].snippet.channelTitle,
+                    channelId: data.items[0].snippet.channelId,
+                    thumbnails: data.items[0].snippet.thumbnails,
+                    localized: data.items[0].snippet.localized,
+                  }
         },
         error: function (response) {
-            logAjaxError(response, 'getPlaylistTitle()');
+            logAjaxError(response, 'getPlaylistInfo()');
         }
      });
 }
