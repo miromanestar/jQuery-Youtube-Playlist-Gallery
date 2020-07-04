@@ -93,7 +93,7 @@ function getPlaylistItems(data, token) {
             if (data.nextPageToken) {
                 getPlaylistItems(playlistItems, data.nextPageToken);
             } else {
-                playlistInfo = getPlaylistInfo();
+                getPlaylistInfo();
                 buildCache(playlistItems);
                 console.log(`Playlist items successfully grabbed with ${ playlistItems.length } items... grabbing item data.`);
             }
@@ -173,14 +173,14 @@ function getPlaylistInfo() {
             part: 'snippet',
         },
         success: function (data) {
-           return ({ title: data.items[0].snippet.title,
-                     description: data.items[0].snippet.description,
-                     publishedAt: parseIsoToDate(data.items[0].snippet.publishedAt),
-                     channelTitle: data.items[0].snippet.channelTitle,
-                     channelId: data.items[0].snippet.channelId,
-                     thumbnails: data.items[0].snippet.thumbnails,
-                     localized: data.items[0].snippet.localized,
-                  });
+           playlistInfo = ({ title: data.items[0].snippet.title,
+                             description: data.items[0].snippet.description,
+                             publishedAt: parseIsoToDate(data.items[0].snippet.publishedAt),
+                             channelTitle: data.items[0].snippet.channelTitle,
+                             channelId: data.items[0].snippet.channelId,
+                             thumbnails: data.items[0].snippet.thumbnails,
+                             localized: data.items[0].snippet.localized,
+                          });
         },
         error: function (response) {
             logAjaxError(response, 'getPlaylistInfo()');
