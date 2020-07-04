@@ -44,13 +44,11 @@ function checkCache() {
     $('.ytgallery-error').hide();
 
     if (!localStorage[cacheName]) { //Cache doesn't exist.
-        getPlaylistInfo();
         getPlaylistItems();
         console.log(`Cache for \"${ cacheName }\" not found... building.`);
     } else {
         let currentTime = new Date().getTime();
         if (currentTime - cache.time > 86400000) { //Cache is more than 1 day old.
-            getPlaylistInfo();
             getPlaylistItems();
             console.log(`Cache for \"${ cacheName }\" is more than a day old... rebuilding.`);
         } else {
@@ -69,6 +67,8 @@ function getCache() {
 //Only grabs the ids of each video from the playlist before passing them to buildCache().
 function getPlaylistItems(data, token) {
     let playlistItems = data || [];
+    let tempPlaylistInfo = tempPlaylistInfo || getPlaylistInfo();
+    
     $('.ytgallery-buttons, #ytgallery-search, .ytgallery-refresh').hide();
     $('.ytgallery-error').hide();
 
@@ -94,6 +94,7 @@ function getPlaylistItems(data, token) {
             if (data.nextPageToken) {
                 getPlaylistItems(playlistItems, data.nextPageToken);
             } else {
+                playlistInfo = tempPlaylistInfo;
                 buildCache(playlistItems);
                 console.log(`Playlist items successfully grabbed with ${ playlistItems.length } items... grabbing item data.`);
             }
