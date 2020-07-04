@@ -27,7 +27,7 @@ The script tag for yt-gallery.js has several attributes:
         numPages: //Holds the number of pages based on number of items and items per page
         
         playlistInfo: {
-            title, description, publishedAt (Formatted), channelId, channelTitle
+            title, description, publishedAt, channelId, channelTitle
             localized: {
                 title, description
             }
@@ -38,7 +38,7 @@ The script tag for yt-gallery.js has several attributes:
         
         pages: [{
             items: [{
-                title, date, id, duration, thumbnail, views
+                title, description, date, id, duration, thumbnail, views
             }]
         }]
       }
