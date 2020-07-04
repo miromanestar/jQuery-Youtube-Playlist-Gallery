@@ -17,6 +17,7 @@ The script tag for yt-gallery.js has several attributes:
  - [Optional] resultsPerPage maximum is 50, default = 5
  
       The pagination in this script is not handled by the youtube data api, but the per page limit is 50
+      
       The pagination is handled via parsing a stored array which contains all the pertinent data.
       
       The data structure for the playlist is saved like so in application storage:
