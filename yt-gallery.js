@@ -26,6 +26,7 @@ var apiKey = 'AIzaSyDTZeKfWmeOytVM6fgCMsAR3R-Up-wdEJA'; //Set your API key.
 
 var cacheName = `ytgallery-${ playlistId }`;
 var cache = getCache(); //Will check if cache exists or not.
+var playlistInfo;
 
 var okayToPaginate = false;
 var currentPage = 1;
@@ -43,11 +44,13 @@ function checkCache() {
     $('.ytgallery-error').hide();
 
     if (!localStorage[cacheName]) { //Cache doesn't exist.
+        getPlaylistInfo();
         getPlaylistItems();
         console.log(`Cache for \"${ cacheName }\" not found... building.`);
     } else {
         let currentTime = new Date().getTime();
         if (currentTime - cache.time > 86400000) { //Cache is more than 1 day old.
+            getPlaylistInfo();
             getPlaylistItems();
             console.log(`Cache for \"${ cacheName }\" is more than a day old... rebuilding.`);
         } else {
@@ -109,7 +112,7 @@ function getPlaylistItems(data, token) {
 function buildCache(playlistIds, data, iteration) {
     let iterationNum = iteration + 1 || 1;
     let ids = playlistIds.slice((iterationNum - 1) * maxResults, iterationNum * maxResults);
-    cache = data || ({ playlistInfo: getPlaylistInfo(), time: new Date().getTime(), numPages: 0, pages: [{ items: [] }] });
+    cache = data || ({ playlistInfo: playlistInfo, time: new Date().getTime(), numPages: 0, pages: [{ items: [] }] });
 
     $.ajax({
         type: 'GET',
@@ -170,14 +173,14 @@ function getPlaylistInfo(selection) {
             part: 'snippet',
         },
         success: function (data) {
-           return ({ title: data.items[0].snippet.title,
-                    description: data.items[0].snippet.description,
-                    publishedAt: parseIsoToDate(data.items[0].snippet.publishedAt),
-                    channelTitle: data.items[0].snippet.channelTitle,
-                    channelId: data.items[0].snippet.channelId,
-                    thumbnails: data.items[0].snippet.thumbnails,
-                    localized: data.items[0].snippet.localized,
-                  });
+           playlistInfo = ({ title: data.items[0].snippet.title,
+                             description: data.items[0].snippet.description,
+                             publishedAt: parseIsoToDate(data.items[0].snippet.publishedAt),
+                             channelTitle: data.items[0].snippet.channelTitle,
+                             channelId: data.items[0].snippet.channelId,
+                             thumbnails: data.items[0].snippet.thumbnails,
+                             localized: data.items[0].snippet.localized,
+                          });
         },
         error: function (response) {
             logAjaxError(response, 'getPlaylistInfo()');
