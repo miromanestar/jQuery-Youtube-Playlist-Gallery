@@ -19,31 +19,28 @@ The script tag for yt-gallery.js has several attributes:
       The pagination in this script is not handled by the youtube data api, but the per page limit is 50
       The pagination is handled via parsing a stored array which contains all the pertinent data.
       
-      The data structure for the playlist is saved like so:
+      The data structure for the playlist is saved like so in application storage:
       ```
+      ytgallery-PLAYLISTID
       {
-       playlistInfo: {
-        title, description, channelTitle, channelId, publishedAt
-        localized: {
-         title, description
+        time: //Holds the date the cache was created, used for determining if cache needs to be remade
+        numPages: //Holds the number of pages based on number of items and items per page
+        
+        playlistInfo: {
+            title, description, publishedAt (Formatted), channelId, channelTitle
+            localized: {
+                title, description
+            }
+            thumbnails: {
+                default, medium, high
+            }
         }
-        thumbnails: {
-         default, high, medium
-         }
-        }
-        time: //Holds the time this cache was created, used for determining if cache should be recreated
-        numPages: //Holds the number of pages based on the size of playlist and number of items allowed per page
-        pages: [
-         0: {
-          items: {
-           0: {
-            title, date, duration, thumbnail, id, views
-           }
-           1, 2, 3, 4...
-          }
-         }
-         1, 2, 3, 4...
-        ]
+        
+        pages: [{
+            items: [{
+                title, date, id, duration, thumbnail, views
+            }]
+        }]
       }
       ```
   
