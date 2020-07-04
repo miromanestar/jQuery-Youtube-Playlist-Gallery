@@ -67,7 +67,6 @@ function getCache() {
 //Only grabs the ids of each video from the playlist before passing them to buildCache().
 function getPlaylistItems(data, token) {
     let playlistItems = data || [];
-    let tempPlaylistInfo = tempPlaylistInfo || getPlaylistInfo();
     
     $('.ytgallery-buttons, #ytgallery-search, .ytgallery-refresh').hide();
     $('.ytgallery-error').hide();
@@ -94,7 +93,7 @@ function getPlaylistItems(data, token) {
             if (data.nextPageToken) {
                 getPlaylistItems(playlistItems, data.nextPageToken);
             } else {
-                playlistInfo = tempPlaylistInfo;
+                playlistInfo = getPlaylistInfo();
                 buildCache(playlistItems);
                 console.log(`Playlist items successfully grabbed with ${ playlistItems.length } items... grabbing item data.`);
             }
@@ -164,7 +163,7 @@ function buildCache(playlistIds, data, iteration) {
 /*
     Retrives playlist info such as title, thumbnails, localized info, etc.
 */
-function getPlaylistInfo(selection) {
+function getPlaylistInfo() {
      $.ajax({
         type: 'GET',
         url: 'https://www.googleapis.com/youtube/v3/playlists',
@@ -174,14 +173,14 @@ function getPlaylistInfo(selection) {
             part: 'snippet',
         },
         success: function (data) {
-           playlistInfo = ({ title: data.items[0].snippet.title,
-                             description: data.items[0].snippet.description,
-                             publishedAt: parseIsoToDate(data.items[0].snippet.publishedAt),
-                             channelTitle: data.items[0].snippet.channelTitle,
-                             channelId: data.items[0].snippet.channelId,
-                             thumbnails: data.items[0].snippet.thumbnails,
-                             localized: data.items[0].snippet.localized,
-                          });
+           return ({ title: data.items[0].snippet.title,
+                     description: data.items[0].snippet.description,
+                     publishedAt: parseIsoToDate(data.items[0].snippet.publishedAt),
+                     channelTitle: data.items[0].snippet.channelTitle,
+                     channelId: data.items[0].snippet.channelId,
+                     thumbnails: data.items[0].snippet.thumbnails,
+                     localized: data.items[0].snippet.localized,
+                  });
         },
         error: function (response) {
             logAjaxError(response, 'getPlaylistInfo()');
