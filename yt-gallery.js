@@ -98,7 +98,6 @@ function getPlaylistItems(data, token) {
             if (data.nextPageToken) {
                 getPlaylistItems(playlistItems, data.nextPageToken);
             } else {
-                getPlaylistInfo();
                 buildCache(playlistItems);
                 console.log(`Playlist items successfully grabbed with ${ playlistItems.length } items... grabbing item data.`);
             }
