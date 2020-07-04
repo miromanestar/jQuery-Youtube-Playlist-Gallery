@@ -109,7 +109,7 @@ function getPlaylistItems(data, token) {
 function buildCache(playlistIds, data, iteration) {
     let iterationNum = iteration + 1 || 1;
     let ids = playlistIds.slice((iterationNum - 1) * maxResults, iterationNum * maxResults);
-    cache = data || ({ time: new Date().getTime(), numPages: 0, pages: [{ items: [] }] });
+    cache = data || ({ title: getPlaylistTitle(), time: new Date().getTime(), numPages: 0, pages: [{ items: [] }] });
 
     $.ajax({
         type: 'GET',
@@ -155,6 +155,24 @@ function buildCache(playlistIds, data, iteration) {
             logAjaxError(response, 'buildCache()');
         }
     });
+}
+
+function getPlaylistTitle() {
+     $.ajax({
+        type: 'GET',
+        url: 'https://www.googleapis.com/youtube/v3/playlists',
+        data: {
+            key: apiKey,
+            id: playlistId,
+            part: 'snippet',
+        },
+        success: function (data) {
+            return data.snippet.title;
+        },
+        error: function (response) {
+            logAjaxError(response, 'getPlaylistTitle()');
+        }
+     });
 }
 
 function renderItems(items) {
