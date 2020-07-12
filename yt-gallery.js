@@ -393,7 +393,7 @@ function parseIsoToDate(s) {
     date = new Date(s);
     year = date.getFullYear();
     month = date.toLocaleString('default', { month: 'long' });
-    day = date.getDate();
+    day = date.getUTCDate();
 
     return `${ month } ${ day }, ${ year }`;
 }
