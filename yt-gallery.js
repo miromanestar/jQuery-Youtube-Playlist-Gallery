@@ -232,6 +232,12 @@ function renderItems(items) {
 
     ytButtonStyling();
     adjustColumns();
+    
+    // You might wanna remove this or edit it for your own site...
+    if ($('.navigation').offset().top >= 200) {
+        $('html, body').animate({ scrollTop: $('#ytgallery-search').offset().top - $('header').height() - 20 }, 'slow');
+    }
+    
     okayToPaginate = true;
 
 }
