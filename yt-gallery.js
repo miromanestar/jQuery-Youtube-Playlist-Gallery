@@ -319,15 +319,19 @@ function ytButtons() {
     });
 
     $('#ytgallery-refresh-btn').click(function() { //Hide everything.
-        state = 'default';
-        currentPage = 1;
-        $('.ytgallery-refresh').hide();
-        $('#ytgallery-search').hide();
-        $('#ytgallery-search').val('');
-        $('#ytgallery-load-icon').show();
-        $('#ytgallery-flexbox').empty();
-        startRetrieval();
+        refresh();
     });
+}
+
+function refresh() {
+    state = 'default';
+    currentPage = 1;
+    $('.ytgallery-refresh').hide();
+    $('#ytgallery-search').hide();
+    $('#ytgallery-search').val('');
+    $('#ytgallery-load-icon').show();
+    $('#ytgallery-flexbox').empty();
+    startRetrieval();
 }
 
 function ytButtonStyling() {
