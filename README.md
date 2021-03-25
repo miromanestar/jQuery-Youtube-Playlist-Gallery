@@ -52,6 +52,8 @@ Please note that you may have to edit this snippet of code for it to work correc
  This snippet of code simply scrolls you back to the top of the youtube gallery div when paginating and scrolled down too far.
  
 [Visit the live demo here.](https://miromanestar.github.io/jQuery-Youtube-Playlist-Gallery/)
+OR
+[View it on my site.](https://miromanestar.com/projects/ytgallery)
 
 **Dependencies**
 
