@@ -43,7 +43,14 @@ The script tag for yt-gallery.js has several attributes:
       }
       ```
   
-
+Please note that you may have to edit this snippet of code for it to work correctly on your site:
+ ```
+ if ($('body').offset().top >= 200) {
+     $('html, body').animate({ scrollTop: $('#ytgallery-search').offset().top - $('header').height() - 20 }, 'slow');
+ }
+ ```
+ This snippet of code simply scrolls you back to the top of the youtube gallery div when paginating and scrolled down too far.
+ 
 [Visit the live demo here.](https://miromanestar.github.io/jQuery-Youtube-Playlist-Gallery/)
 
 **Dependencies**
