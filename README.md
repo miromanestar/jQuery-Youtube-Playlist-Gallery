@@ -45,7 +45,7 @@ The script tag for yt-gallery.js has several attributes:
   
 Please note that you may have to edit this snippet of code for it to work correctly on your site:
  ```
- if ($('body').offset().top >= 200) {
+ if ($(document).scrollTop() - $('#ytgallery-flexbox').offset().top >= 200) {
      $('html, body').animate({ scrollTop: $('#ytgallery-search').offset().top - $('header').height() - 20 }, 'slow');
  }
  ```
