@@ -238,7 +238,7 @@ function renderItems(items) {
     adjustColumns();
     
     // You might wanna remove this or edit it for your own site...
-    if ($('body').offset().top >= 200) {
+    if ($(document).scrollTop() - $('#ytgallery-flexbox').offset().top >= 200) {
         $('html, body').animate({ scrollTop: $('#ytgallery-search').offset().top - $('header').height() - 20 }, 'slow');
     }
     
