@@ -4,9 +4,7 @@
     A simple front-end script that grabs youtube videos and displays them in a gallery format!
 */
 jQuery(document).ready(function () {
-    checkCache();
-    adjustColumns();
-    ytButtons();
+    initialize();
 
     var timer = null;
     $('#ytgallery-search').keyup(function () {
@@ -17,12 +15,18 @@ jQuery(document).ready(function () {
 
 window.addEventListener('resize', adjustColumns);
 
+function initialize() {
+    checkCache();
+    adjustColumns();
+    ytButtons();
+}
+
 var playlistId = document.currentScript.getAttribute('playlistId') || 'Error: No playlistID set.'; //Required.
 var maxResults = document.currentScript.getAttribute('resultsPerPage') || 5; //Max of 50
 var searchEnabled = document.currentScript.getAttribute('searchEnabled') || 'true'; //Optional.
 var numColumns = document.currentScript.getAttribute('columns') || 3; //Max is 4, optional.
 
-var apiKey = 'AIzaSyDTZeKfWmeOytVM6fgCMsAR3R-Up-wdEJA'; //Set your API key.
+var apiKey = ''; //Set your API key.
 
 var cacheName = `ytgallery-${ playlistId }`;
 var cache = getCache(); //Will check if cache exists or not.
