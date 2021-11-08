@@ -21,10 +21,10 @@ function initialize() {
     ytButtons();
 }
 
-var playlistId = document.currentScript.getAttribute('playlistId') || 'Error: No playlistID set.'; //Required.
-var maxResults = document.currentScript.getAttribute('resultsPerPage') || 5; //Max of 50
-var searchEnabled = document.currentScript.getAttribute('searchEnabled') || 'true'; //Optional.
-var numColumns = document.currentScript.getAttribute('columns') || 3; //Max is 4, optional.
+var playlistId = $('#ytgallery-script').attr('playlistId') || 'Error: No playlistID set.'; //Required.
+var maxResults = $('#ytgallery-script').attr('resultsPerPage') || 5; //Max of 50
+var searchEnabled = $('#ytgallery-script').attr('searchEnabled') || 'true'; //Optional.
+var numColumns = $('#ytgallery-script').attr('columns') || 3; //Max is 4, optional.
 
 var apiKey = ''; //Set your API key.
 
@@ -139,7 +139,7 @@ function buildCache(playlistIds, data, iteration) {
                         description: item.snippet.description,
                         date: getDate(item), //Grabs 1 of three possible date sources.
                         thumbnail: item.snippet.thumbnails.medium.url,
-                        duration: parseIsoToDuration(item.contentDetails.duration),
+                        duration: parseIsoToDuration(item.contentDetails.duration, item.snippet.liveBroadcastContent),
                         views: numberWithCommas(item.statistics.viewCount),
                         id: item.id
                     });
@@ -390,6 +390,8 @@ function getDate(item) {
         return parseIsoToDate(item.recordingDetails.recordingDate);
     } else if (item.liveStreamingDetails && item.liveStreamingDetails.actualStartTime != null) {
         return parseIsoToDate(item.liveStreamingDetails.actualStartTime);
+    } else if (item.liveStreamingDetails && item.liveStreamingDetails.scheduledStartTime != null) {
+        return parseIsoToDate(item.liveStreamingDetails.scheduledStartTime);
     } else {
         return parseIsoToDate(item.snippet.publishedAt);
     }
@@ -412,9 +414,11 @@ function parseIsoToDate(s) {
     return `${ month } ${ day }, ${ year }`;
 }
 
-function parseIsoToDuration(duration) {
-    if (duration === 'P0D') { //Occurs when a video is currently live and added to the playlist.
-        return 'LIVE';
+function parseIsoToDuration(duration, type) {
+    switch (type) {
+        case 'live': return 'LIVE';
+        case 'upcoming': return 'UPCOMING'
+        default: break;
     }
 
     var match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
