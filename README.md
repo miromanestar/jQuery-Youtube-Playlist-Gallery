@@ -1,4 +1,7 @@
 # jQuery-Youtube-Playlist-Gallery
+
+NOTE: This project has been archived and superceded by the projected linked [here](https://github.com/miromanestar/Youtube-Gallery). It offers numerous advantages to this one, including the removal of jQuery as a dependency.
+
 A HTML/JS/CSS paginated youtube playlist gallery with jQuery and fancybox! Also has built in search capability!
 
 The script tag for yt-gallery.js has several attributes:
